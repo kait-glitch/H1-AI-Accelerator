@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H1 AI Agentic Accelerator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+:root {
+  --pink:#ed15c4; --navy:#1c1f35; --blue:#3f3afc;
+  --n2:#22263d; --n3:#292e48; --n4:#2e3350;
+  --pa:rgba(237,21,196,.12); --ba:rgba(63,58,252,.12);
+  --white:#fff; --t1:#f0f1f8; --t2:#9198b8; --t3:#555d80;
+  --rule:rgba(255,255,255,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--t1);min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{height:52px;background:rgba(28,31,53,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:100;}
+.tbl{display:flex;align-items:center;gap:10px;}
+.pip{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:blink 2.4s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.tbname{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);}
+.tbr{font-size:12px;color:var(--t3);}
+.tbr a{color:var(--pink);text-decoration:none;font-weight:600;}
+
+/* ── HERO ── */
+.hero{padding:56px 32px 44px;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;border-bottom:1px solid var(--rule);}
+.hero-kick{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;}
+.hero-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4vw,42px);font-weight:700;line-height:1.12;color:var(--white);margin-bottom:14px;}
+.hero-h1 em{font-style:normal;background:linear-gradient(120deg,var(--pink) 10%,var(--blue) 90%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:15px;line-height:1.65;color:var(--t2);max-width:520px;margin-bottom:24px;}
+
+/* progress bar in hero */
+.hero-prog{margin-top:4px;}
+.hp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.hp-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.04em;text-transform:uppercase;}
+.hp-count{font-size:11px;font-weight:700;color:var(--white);}
+.hp-track{height:5px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;width:100%;max-width:520px;}
+.hp-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--blue));border-radius:100px;transition:width .6s cubic-bezier(.34,1.56,.64,1);width:0%;}
+
+.stats{display:flex;flex-direction:column;gap:14px;flex-shrink:0;}
+.stat{text-align:right;}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:var(--white);line-height:1;margin-bottom:3px;}
+.stat-l{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;}
+
+/* ── COACH BANNER ── */
+.coach-wrap{max-width:1080px;margin:0 auto;padding:28px 32px 0;}
+.coach-banner{position:relative;overflow:hidden;border-radius:20px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(125deg,#1a0d2e 0%,#1c1f35 40%,#0e1528 100%);border:1px solid rgba(237,21,196,.3);box-shadow:0 0 0 1px rgba(237,21,196,.08),0 20px 60px rgba(0,0,0,.4);}
+.coach-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 50%,rgba(237,21,196,.18) 0%,transparent 60%),radial-gradient(ellipse at 100% 50%,rgba(63,58,252,.14) 0%,transparent 60%);pointer-events:none;}
+.coach-banner::after{content:'';position:absolute;top:-60px;right:120px;width:200px;height:200px;border-radius:50%;background:rgba(237,21,196,.06);filter:blur(40px);pointer-events:none;}
+.coach-left{display:flex;align-items:center;gap:20px;position:relative;z-index:1;}
+.coach-orb{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--pink),var(--blue));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 8px 24px rgba(237,21,196,.35);animation:orb-pulse 3s ease-in-out infinite;}
+@keyframes orb-pulse{0%,100%{box-shadow:0 8px 24px rgba(237,21,196,.35)}50%{box-shadow:0 8px 36px rgba(237,21,196,.55),0 0 0 8px rgba(237,21,196,.06)}}
+.coach-text{}
+.coach-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:5px;opacity:.9;}
+.coach-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:5px;line-height:1.2;}
+.coach-sub{font-size:13px;color:var(--t2);line-height:1.5;max-width:400px;}
+.coach-btn{position:relative;z-index:1;flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;background:linear-gradient(135deg,var(--pink),#b010a0);color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:.02em;transition:all .25s;white-space:nowrap;box-shadow:0 6px 20px rgba(237,21,196,.35);}
+.coach-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(237,21,196,.5);}
+.coach-btn svg{width:16px;height:16px;transition:transform .2s;}
+.coach-btn:hover svg{transform:translateX(2px);}
+@media(max-width:680px){.coach-banner{flex-direction:column;align-items:flex-start}.coach-btn{width:100%;justify-content:center;}}
+@media(max-width:540px){.coach-wrap{padding:20px 18px 0;}}
+
+/* ── GRID ── */
+.grid{max-width:1080px;margin:0 auto;padding:40px 32px 80px;display:grid;grid-template-columns:1fr 296px;gap:28px;align-items:start;}
+.sec-l{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:14px;}
+
+/* ── WEEK CARDS ── */
+.week-card{background:var(--n2);border:1px solid var(--rule);border-radius:16px;margin-bottom:10px;overflow:hidden;transition:border-color .25s,box-shadow .25s;}
+.week-card .wk-hd{cursor:pointer;}
+.week-card:hover{border-color:rgba(255,255,255,.13);}
+.week-card.wk-open{border-color:rgba(237,21,196,.3);box-shadow:0 0 0 1px rgba(237,21,196,.08),0 12px 36px rgba(0,0,0,.28);}
+.week-card.wk-done{border-color:rgba(63,58,252,.35);}
+.week-card.wk-done .wk-hd{opacity:.85;}
+
+.wk-hd{display:flex;align-items:center;gap:14px;padding:18px 20px;}
+.wk-n{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);min-width:44px;}
+.wk-ico{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background .25s;}
+.week-card.wk-open .wk-ico{background:var(--pa);}
+.week-card.wk-done .wk-ico{background:var(--ba);}
+.wk-meta{flex:1;min-width:0;}
+.wk-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--white);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wk-prin{font-size:12px;color:var(--t3);font-style:italic;}
+.wk-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.wk-bdg{display:flex;gap:5px;}
+.bdg{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:.05em;text-transform:uppercase;}
+.b-do{background:var(--pa);color:var(--pink);}
+.b-share{background:var(--ba);color:#7a76ff;}
+.b-nom{background:rgba(240,192,64,.12);color:#f0c040;}
+.wk-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;cursor:pointer;background:transparent;}
+.wk-check:hover{border-color:rgba(63,58,252,.6);background:var(--ba);}
+.wk-check svg{width:11px;height:11px;opacity:0;transition:opacity .2s;}
+.week-card.wk-done .wk-check{border-color:var(--blue);background:var(--ba);}
+.week-card.wk-done .wk-check svg{opacity:1;}
+
+.wk-body{display:none;padding:0 20px 20px;}
+.week-card.wk-open .wk-hd{border-bottom:1px solid var(--rule);}
+.week-card.wk-open .wk-body{display:block;}
+
+.wk-desc{font-size:14px;line-height:1.7;color:var(--t2);padding:16px 0 12px;border-bottom:1px solid var(--rule);margin-bottom:14px;}
+.wk-xp-item{display:flex;gap:8px;font-size:14px;color:var(--t2);padding:5px 0;line-height:1.5;}
+.wk-xp-item::before{content:'→';color:var(--pink);font-size:13px;flex-shrink:0;margin-top:1px;}
+.wk-xp-item a{color:var(--t2);text-decoration:underline;text-decoration-color:rgba(145,152,184,.35);text-underline-offset:2px;transition:color .2s,text-decoration-color .2s;}
+.wk-xp-item a:hover{color:var(--pink);text-decoration-color:var(--pink);}
+.wk-ms{background:rgba(237,21,196,.05);border:1px solid rgba(237,21,196,.15);border-radius:10px;padding:13px 15px;margin-top:14px;}
+.wk-ms-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:7px;}
+.wk-ms-text{font-size:14px;color:var(--t2);line-height:1.6;}
+.wk-ms-slack{margin-top:7px;font-size:13px;font-weight:600;color:var(--t3);}
+.wk-ms-slack span{color:var(--pink);}
+
+/* complete button inside card */
+.wk-complete-btn{margin-top:16px;width:100%;padding:11px;border:none;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,var(--pink),#b010a0);color:var(--white);}
+.wk-complete-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(237,21,196,.3);}
+.wk-complete-btn:disabled{background:rgba(255,255,255,.07);color:var(--t3);cursor:not-allowed;transform:none;box-shadow:none;border:1px solid var(--rule);}
+.wk-complete-btn.done{background:var(--ba);color:var(--blue);border:1px solid rgba(63,58,252,.3);cursor:default;transform:none;box-shadow:none;}
+.wk-btn-row{display:flex;gap:8px;margin-top:12px;}
+.wk-btn-row .wk-complete-btn{margin-top:0;flex:1;}
+.wk-undo-btn{padding:11px 14px;border:1px solid var(--rule);border-radius:10px;background:rgba(255,255,255,.04);color:var(--t3);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;display:none;}
+.wk-undo-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:var(--t2);}
+.week-card.wk-done .wk-undo-btn{display:block;}
+
+/* posted checkbox */
+.wk-posted{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--rule);cursor:pointer;transition:border-color .2s,background .2s;user-select:none;}
+.wk-posted:hover{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.05);}
+.wk-posted.checked{background:rgba(63,58,252,.07);border-color:rgba(63,58,252,.3);}
+.wk-posted-box{width:18px;height:18px;border-radius:5px;border:2px solid var(--t3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .2s;background:transparent;}
+.wk-posted.checked .wk-posted-box{border-color:var(--blue);background:var(--ba);}
+.wk-posted-box svg{width:10px;height:10px;opacity:0;transition:opacity .15s;}
+.wk-posted.checked .wk-posted-box svg{opacity:1;}
+.wk-posted-label{font-size:13px;color:var(--t2);line-height:1.45;}
+.wk-posted-label strong{color:var(--pink);font-weight:600;}
+.week-card.wk-done .wk-posted{display:none;}
+
+/* code callouts */
+.code-cards{margin-top:24px;}
+.cc{background:var(--n2);border:1px solid rgba(63,58,252,.22);border-radius:13px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
+.cc:last-child{margin-bottom:0;}
+.cc-ico{font-size:19px;flex-shrink:0;}
+.cc-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7a76ff;margin-bottom:3px;}
+.cc-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.cc-sub{font-size:12px;color:var(--t3);line-height:1.5;}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:18px;}
+.side-card{background:var(--n2);border:1px solid var(--rule);border-radius:16px;padding:20px;}
+.side-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:14px;}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:12px;position:relative;}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:10px;top:26px;bottom:-6px;width:1px;background:var(--rule);}
+.tl-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--t3);flex-shrink:0;background:var(--n2);position:relative;z-index:1;margin-top:2px;}
+.tl-item:first-child .tl-dot{border-color:var(--pink);background:var(--pa);color:var(--pink);}
+.tl-c{padding-bottom:18px;}
+.tl-t{font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.tl-s{font-size:12px;color:var(--t3);}
+
+/* challenge types */
+.ct-list{display:flex;flex-direction:column;gap:10px;}
+.ct-item{display:flex;gap:10px;align-items:flex-start;}
+.ct-bdg{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+.ct-desc{font-size:12px;color:var(--t2);line-height:1.5;}
+
+/* manifesto sidebar list */
+.mf-list{display:flex;flex-direction:column;gap:0;}
+.mf-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:opacity .2s;}
+.mf-item:last-child{border-bottom:none;}
+.mf-item:hover{opacity:.75;}
+.mf-num{font-size:10px;font-weight:700;color:var(--pink);min-width:16px;margin-top:3px;flex-shrink:0;}
+.mf-content{}
+.mf-title{font-size:12px;font-weight:600;color:var(--white);margin-bottom:1px;}
+.mf-hint{font-size:11px;color:var(--t3);line-height:1.4;}
+.mf-tap{font-size:10px;color:var(--t3);margin-top:10px;font-style:italic;}
+
+/* slack card */
+.slack-card{background:linear-gradient(135deg,rgba(237,21,196,.08),rgba(63,58,252,.08));border:1px solid rgba(237,21,196,.2);border-radius:16px;padding:20px;}
+.slack-ico{font-size:26px;margin-bottom:10px;}
+.slack-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:7px;}
+.slack-text{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:13px;}
+.slack-link{display:inline-block;font-size:12px;font-weight:700;color:var(--pink);background:var(--pa);border:1px solid rgba(237,21,196,.25);padding:7px 13px;border-radius:8px;text-decoration:none;transition:background .2s;}
+.slack-link:hover{background:rgba(237,21,196,.2);}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(10,12,24,.75);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-bg.open{opacity:1;pointer-events:all;}
+.modal{background:var(--n3);border:1px solid rgba(255,255,255,.1);border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:32px;position:relative;transform:translateY(16px) scale(.97);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.modal-bg.open .modal{transform:translateY(0) scale(1);}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:16px;line-height:1;transition:background .2s;}
+.modal-close:hover{background:rgba(255,255,255,.12);}
+.modal-num{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:16px;line-height:1.2;}
+.modal-body{font-size:14px;line-height:1.75;color:var(--t2);}
+.modal-body p{margin-bottom:12px;}
+.modal-body p:last-child{margin-bottom:0;}
+.modal-body strong{color:var(--t1);font-weight:600;}
+.modal-nav{display:flex;gap:8px;margin-top:24px;padding-top:20px;border-top:1px solid var(--rule);}
+.modal-nav-btn{flex:1;padding:10px;border:1px solid var(--rule);border-radius:10px;background:rgba(255,255,255,.04);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.modal-nav-btn:hover{border-color:rgba(255,255,255,.18);color:var(--white);}
+.modal-nav-btn:disabled{opacity:.3;cursor:default;}
+.modal-counter{font-size:11px;color:var(--t3);text-align:center;padding:10px 0 0;align-self:center;}
+
+/* confetti */
+@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.cf{position:fixed;width:7px;height:7px;border-radius:2px;pointer-events:none;z-index:9999;animation:cf 2s ease-in forwards;}
+
+/* ── COMPLETION TOAST ── */
+.toast-backdrop{position:fixed;inset:0;background:rgba(10,12,24,.5);backdrop-filter:blur(4px);z-index:299;opacity:0;pointer-events:none;transition:opacity .3s;}
+.toast-backdrop.show{opacity:1;pointer-events:all;}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%, -40%) scale(.96);background:var(--n3);border:1px solid rgba(237,21,196,.3);border-radius:16px;padding:20px 24px;width:min(480px,calc(100vw - 40px));box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(237,21,196,.08);z-index:300;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.toast.show{opacity:1;transform:translate(-50%, -50%) scale(1);pointer-events:all;}
+.toast-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.toast-icon{font-size:22px;flex-shrink:0;}
+.toast-txt{}
+.toast-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.toast-body{font-size:13px;color:var(--t2);line-height:1.5;}
+.toast-body strong{color:var(--pink);font-weight:600;}
+.toast-close{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t3);font-size:13px;flex-shrink:0;transition:background .2s;}
+.toast-close:hover{background:rgba(255,255,255,.12);}
+.toast-actions{display:flex;gap:8px;}
+.toast-slack{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border-radius:9px;background:linear-gradient(135deg,var(--pink),#b010a0);color:var(--white);font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.02em;transition:opacity .2s;}
+.toast-slack:hover{opacity:.88;}
+.toast-dismiss{padding:9px 14px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid var(--rule);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'Inter',sans-serif;}
+.toast-dismiss:hover{background:rgba(255,255,255,.1);}
+
+/* ── COACH NUDGE — floated right inside card ── */
+.wk-body-inner{display:grid;grid-template-columns:1fr 200px;gap:20px;align-items:start;}
+.wk-body-main{}
+.coach-nudge{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:12px;background:linear-gradient(160deg,rgba(237,21,196,.1),rgba(63,58,252,.08));border:1px solid rgba(237,21,196,.22);text-decoration:none;transition:border-color .2s,background .2s;position:sticky;top:72px;}
+.coach-nudge:hover{border-color:rgba(237,21,196,.4);background:linear-gradient(160deg,rgba(237,21,196,.15),rgba(63,58,252,.12));}
+.coach-nudge-ico{font-size:22px;text-align:center;}
+.coach-nudge-eyebrow{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);text-align:center;}
+.coach-nudge-title{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--white);line-height:1.3;text-align:center;}
+.coach-nudge-txt{font-size:11px;color:var(--t2);line-height:1.5;text-align:center;}
+.coach-nudge-cta{font-size:11px;font-weight:700;color:var(--pink);text-align:center;margin-top:2px;}
+@media(max-width:680px){.wk-body-inner{grid-template-columns:1fr}.coach-nudge{position:static;flex-direction:row;align-items:center;text-align:left;}.coach-nudge-ico,.coach-nudge-eyebrow,.coach-nudge-title,.coach-nudge-txt,.coach-nudge-cta{text-align:left;}}
+
+/* responsive */
+@media(max-width:860px){.hero{grid-template-columns:1fr}.stats{flex-direction:row}.stat{text-align:left}.grid{grid-template-columns:1fr}.tbr{display:none}}
+@media(max-width:540px){.topbar,.hero,.grid{padding-left:18px;padding-right:18px}.wk-bdg{display:none}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="tbl"><div class="pip"></div><span class="tbname">AI Agentic Accelerator</span></div>
+  <div class="tbr">Questions? <a href="https://hackerone.slack.com/archives/C09M47Y857X" target="_blank">#h1-agentic-ai-accelerator</a></div>
+</nav>
+
+<!-- COACH BANNER -->
+<div class="coach-wrap">
+  <div class="coach-banner">
+    <div class="coach-left">
+      <div class="coach-orb">🧠</div>
+      <div class="coach-text">
+        <div class="coach-eyebrow">New · AI-Powered</div>
+        <div class="coach-title">AI-Native Transformation Coach</div>
+        <div class="coach-sub">Your personal guide through the program. Ask it anything — where to start, how to build a Skill, what to do when something breaks.</div>
+      </div>
+    </div>
+    <a href="https://claude.ai/project/019eada5-1c20-761f-a81d-a23d72c3971c" target="_blank" class="coach-btn">
+      Start a conversation
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9 4 13 8 9 12"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <p class="hero-kick">HackerOne Internal Program &middot; 5 Weeks</p>
+    <h1 class="hero-h1">From first use<br>to <em>AI-native</em></h1>
+    <p class="hero-sub">A structured program to move from ad hoc Claude experimentation to Claude embedded in how you actually work. Designed for all Hackeronies — no technical background required.</p>
+    <div class="hero-prog">
+      <div class="hp-row">
+        <span class="hp-label">Your progress</span>
+        <span class="hp-count" id="prog-count">0 of 5 complete</span>
+      </div>
+      <div class="hp-track"><div class="hp-fill" id="prog-fill"></div></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Weeks</div></div>
+    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Milestones</div></div>
+    <div class="stat"><div class="stat-n">1&times;</div><div class="stat-l">Raffle/week</div></div>
+  </div>
+</section>
+
+<!-- MAIN GRID -->
+<div class="grid">
+  <div>
+    <p class="sec-l">Program curriculum</p>
+
+    <!-- W1 -->
+    <div class="week-card wk-open" id="wk1">
+      <div class="wk-hd" onclick="toggleWk('wk1')">
+        <span class="wk-n">Week 1</span>
+        <div class="wk-ico">🔌</div>
+        <div class="wk-meta">
+          <div class="wk-title">Basics + Prompting + Connectors</div>
+          <div class="wk-prin">"AI first, judgment always"</div>
+        </div>
+        <div class="wk-right">
+          <div class="wk-bdg"><span class="bdg b-do">Do It</span></div>
+          <div class="wk-check" onclick="event.stopPropagation();markDone('wk1')" title="Mark complete">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="wk-body">
+        <div class="wk-body-inner">
+          <div class="wk-body-main">
+            <p class="wk-desc">AI is our default — not a supplement to how we used to work. Before you can use Claude well, you need to understand what you're working with: the different features, how connectors plug your tools into Claude, and how to prompt it in a way that produces output you can actually use.</p>
+            <p class="sec-l">What to explore</p>
+            <div class="wk-xp-item"><a href="https://hackerone.atlassian.net/wiki/spaces/OpenAI/pages/6432292867/Claude+Enterprise+Quick+Start+Guide#Setup%3A-Do-This-Before-Your-First-Session" target="_blank">Understand Claude features: Chat, Projects, Artifacts, and Claude Code</a></div>
+            <div class="wk-xp-item"><a href="https://hackerone.atlassian.net/wiki/spaces/OpenAI/pages/6432292867/Claude+Enterprise+Quick+Start+Guide#2.-Configure-Your-User-Settings" target="_blank">Set up your environment: response style, preferences, settings</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features" target="_blank">Connect the tools relevant to your work (Drive, Slack, Linear, etc.)</a></div>
+            <div class="wk-xp-item"><a href="https://anthropic.skilljar.com/claude-101/383392" target="_blank">Or, complete the Claude 101 Course — covers this in ~30–45 min</a></div>
+            <div class="wk-ms">
+              <div class="wk-ms-label">Milestone &middot; Do It</div>
+              <div class="wk-ms-text">Set at least one preference in Settings. Connect at least two tools. Try a real prompt with one of them.</div>
+              <div class="wk-ms-slack">Post to <span>#h1-agentic-ai-accelerator</span>: two connectors + one prompt you tried &rarr; entered in this week's raffle</div>
+            </div>
+            <div class="wk-posted" id="posted-wk1" onclick="togglePosted('wk1')">
+              <div class="wk-posted-box"><svg viewBox="0 0 10 10" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 5 4 7.5 8.5 2.5"/></svg></div>
+              <span class="wk-posted-label">I've posted my milestone to this week's <strong>#h1-agentic-ai-accelerator</strong> thread so I can be entered into the raffle. The team won't know otherwise!</span>
+            </div>
+            <div class="wk-btn-row">
+              <button class="wk-complete-btn" id="btn-wk1" onclick="markDone('wk1')" disabled>Mark Week 1 complete →</button>
+              <button class="wk-undo-btn" onclick="undoDone('wk1')">Undo</button>
+            </div>
+          </div>
+          <a href="https://claude.ai/project/019eada5-1c20-761f-a81d-a23d72c3971c" target="_blank" class="coach-nudge">
+            <div class="coach-nudge-ico">🧠</div>
+            <div class="coach-nudge-eyebrow">AI Coach</div>
+            <div class="coach-nudge-title">AI-Native Transformation Coach</div>
+            <div class="coach-nudge-txt">Ask about setting up Claude and choosing the right connectors for your work.</div>
+            <div class="coach-nudge-cta">Start a conversation →</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- W2 -->
+    <div class="week-card" id="wk2">
+      <div class="wk-hd" onclick="toggleWk('wk2')">
+        <span class="wk-n">Week 2</span>
+        <div class="wk-ico">⚙️</div>
+        <div class="wk-meta">
+          <div class="wk-title">Skills</div>
+          <div class="wk-prin">"Treat your workflows like a target"</div>
+        </div>
+        <div class="wk-right">
+          <div class="wk-bdg"><span class="bdg b-do">Do It</span><span class="bdg b-share">Share It</span></div>
+          <div class="wk-check" onclick="event.stopPropagation();markDone('wk2')" title="Mark complete">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="wk-body">
+        <div class="wk-body-inner">
+          <div class="wk-body-main">
+            <p class="wk-desc">A one-off prompt solves today's problem. A Skill solves it every time — consistently, without rebuilding from scratch. Skills work across the entire Claude interface: in chat, with your connected tools, and inside Projects you'll configure next week.</p>
+            <p class="sec-l">What to explore</p>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/12512176-what-are-skills" target="_blank">What are Skills and how they differ from one-off prompts</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/12512180-use-skills-in-claude" target="_blank">Use, Share, and Manage Skills across your workspace</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/12512198-how-to-create-custom-skills" target="_blank">Building a Skill from Scratch</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/12512198-how-to-create-custom-skills" target="_blank">Skill Libraries — finding and reusing what teammates build</a></div>
+            <div class="wk-ms">
+              <div class="wk-ms-label">Milestone &middot; Do It + Share It</div>
+              <div class="wk-ms-text">Build one Skill for something you do regularly — a research task, a writing workflow, a recurring report.</div>
+              <div class="wk-ms-slack">Post to <span>#h1-agentic-ai-accelerator</span>: what it does, what it replaced, and one honest line about what you'd refine</div>
+            </div>
+            <div class="wk-posted" id="posted-wk2" onclick="togglePosted('wk2')">
+              <div class="wk-posted-box"><svg viewBox="0 0 10 10" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 5 4 7.5 8.5 2.5"/></svg></div>
+              <span class="wk-posted-label">I've posted my milestone to this week's <strong>#h1-agentic-ai-accelerator</strong> thread so I can be entered into the raffle. The team won't know otherwise!</span>
+            </div>
+            <div class="wk-btn-row">
+              <button class="wk-complete-btn" id="btn-wk2" onclick="markDone('wk2')" disabled>Mark Week 2 complete →</button>
+              <button class="wk-undo-btn" onclick="undoDone('wk2')">Undo</button>
+            </div>
+          </div>
+          <a href="https://claude.ai/project/019eada5-1c20-761f-a81d-a23d72c3971c" target="_blank" class="coach-nudge">
+            <div class="coach-nudge-ico">🧠</div>
+            <div class="coach-nudge-eyebrow">AI Coach</div>
+            <div class="coach-nudge-title">AI-Native Transformation Coach</div>
+            <div class="coach-nudge-txt">Ask about identifying which workflows to turn into Skills first.</div>
+            <div class="coach-nudge-cta">Start a conversation →</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- W3 -->
+    <div class="week-card" id="wk3">
+      <div class="wk-hd" onclick="toggleWk('wk3')">
+        <span class="wk-n">Week 3</span>
+        <div class="wk-ico">🗂️</div>
+        <div class="wk-meta">
+          <div class="wk-title">Projects</div>
+          <div class="wk-prin">"Disclose what works. Disclose what breaks."</div>
+        </div>
+        <div class="wk-right">
+          <div class="wk-bdg"><span class="bdg b-do">Do It</span><span class="bdg b-share">Share It</span></div>
+          <div class="wk-check" onclick="event.stopPropagation();markDone('wk3')" title="Mark complete">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="wk-body">
+        <div class="wk-body-inner">
+          <div class="wk-body-main">
+            <p class="wk-desc">A Project is a persistent workspace where Claude retains context across every conversation — unlike a general chat, which resets when you close it. Configure it once with a system prompt and every conversation in that Project inherits it automatically. Projects can be shared across teams.</p>
+            <p class="sec-l">What to explore</p>
+            <div class="wk-xp-item">Creating and configuring a Project — setup, naming, organization</div>
+            <div class="wk-xp-item">Writing a strong system prompt — the single most important thing you'll do in a Project</div>
+            <div class="wk-xp-item">Connecting tools and Skills inside a Project (pulling Weeks 1 &amp; 2 together)</div>
+            <div class="wk-xp-item">Sharing Projects across teams for collaborative ongoing work</div>
+            <div class="wk-ms">
+              <div class="wk-ms-label">Milestone &middot; Do It + Share It</div>
+              <div class="wk-ms-text">Create a Project for a real work area. Write a system prompt, connect your tools, add the Skill you built last week.</div>
+              <div class="wk-ms-slack">Post to <span>#h1-agentic-ai-accelerator</span>: a snippet of your system prompt + one sentence on what felt different vs. a regular chat</div>
+            </div>
+            <div class="wk-posted" id="posted-wk3" onclick="togglePosted('wk3')">
+              <div class="wk-posted-box"><svg viewBox="0 0 10 10" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 5 4 7.5 8.5 2.5"/></svg></div>
+              <span class="wk-posted-label">I've posted my milestone to this week's <strong>#h1-agentic-ai-accelerator</strong> thread so I can be entered into the raffle. The team won't know otherwise!</span>
+            </div>
+            <div class="wk-btn-row">
+              <button class="wk-complete-btn" id="btn-wk3" onclick="markDone('wk3')" disabled>Mark Week 3 complete →</button>
+              <button class="wk-undo-btn" onclick="undoDone('wk3')">Undo</button>
+            </div>
+          </div>
+          <a href="https://claude.ai/project/019eada5-1c20-761f-a81d-a23d72c3971c" target="_blank" class="coach-nudge">
+            <div class="coach-nudge-ico">🧠</div>
+            <div class="coach-nudge-eyebrow">AI Coach</div>
+            <div class="coach-nudge-title">AI-Native Transformation Coach</div>
+            <div class="coach-nudge-txt">Ask how to write a strong system prompt for your specific role and work area.</div>
+            <div class="coach-nudge-cta">Start a conversation →</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- W4 -->
+    <div class="week-card" id="wk4">
+      <div class="wk-hd" onclick="toggleWk('wk4')">
+        <span class="wk-n">Week 4</span>
+        <div class="wk-ico">✨</div>
+        <div class="wk-meta">
+          <div class="wk-title">Artifacts</div>
+          <div class="wk-prin">"Direct what AI executes"</div>
+        </div>
+        <div class="wk-right">
+          <div class="wk-bdg"><span class="bdg b-do">Do It</span></div>
+          <div class="wk-check" onclick="event.stopPropagation();markDone('wk4')" title="Mark complete">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="wk-body">
+        <div class="wk-body-inner">
+          <div class="wk-body-main">
+            <p class="wk-desc">Artifacts are things Claude produces that you can share, hand off, or deploy — dashboards, forms, tools, docs. You've built the environment. Now produce something your team can actually use.</p>
+            <p class="sec-l">What to explore</p>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" target="_blank">What are Artifacts and when Claude auto-generates them vs. responding inline</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/9547008-publishing-and-sharing-artifacts" target="_blank">Publishing and Sharing Artifacts with your team</a></div>
+            <div class="wk-xp-item">Choosing the right artifact format for your use case</div>
+            <div class="wk-ms">
+              <div class="wk-ms-label">Milestone &middot; Do It</div>
+              <div class="wk-ms-text">Build one Artifact your team could actually use — a dashboard, a form, a flowchart, a mini tool. Share it with at least one person.</div>
+              <div class="wk-ms-slack">Post to <span>#h1-agentic-ai-accelerator</span>: a screenshot of what you built</div>
+            </div>
+            <div class="wk-posted" id="posted-wk4" onclick="togglePosted('wk4')">
+              <div class="wk-posted-box"><svg viewBox="0 0 10 10" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 5 4 7.5 8.5 2.5"/></svg></div>
+              <span class="wk-posted-label">I've posted my milestone to this week's <strong>#h1-agentic-ai-accelerator</strong> thread so I can be entered into the raffle. The team won't know otherwise!</span>
+            </div>
+            <div class="wk-btn-row">
+              <button class="wk-complete-btn" id="btn-wk4" onclick="markDone('wk4')" disabled>Mark Week 4 complete →</button>
+              <button class="wk-undo-btn" onclick="undoDone('wk4')">Undo</button>
+            </div>
+          </div>
+          <a href="https://claude.ai/project/019eada5-1c20-761f-a81d-a23d72c3971c" target="_blank" class="coach-nudge">
+            <div class="coach-nudge-ico">🧠</div>
+            <div class="coach-nudge-eyebrow">AI Coach</div>
+            <div class="coach-nudge-title">AI-Native Transformation Coach</div>
+            <div class="coach-nudge-txt">Ask what kind of Artifact would be most useful for your team's specific work.</div>
+            <div class="coach-nudge-cta">Start a conversation →</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- W5 -->
+    <div class="week-card" id="wk5">
+      <div class="wk-hd" onclick="toggleWk('wk5')">
+        <span class="wk-n">Week 5</span>
+        <div class="wk-ico">🤖</div>
+        <div class="wk-meta">
+          <div class="wk-title">Automation</div>
+          <div class="wk-prin">"Direct what AI executes"</div>
+        </div>
+        <div class="wk-right">
+          <div class="wk-bdg"><span class="bdg b-do">Do It</span><span class="bdg b-nom">Nominate It</span></div>
+          <div class="wk-check" onclick="event.stopPropagation();markDone('wk5')" title="Mark complete">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="wk-body">
+        <div class="wk-body-inner">
+          <div class="wk-body-main">
+            <p class="wk-desc">Automation in Claude is a spectrum. Most of you can start today, in chat, with the tools you've already connected. No terminal. No code. No setup beyond Week 1. This week is about removing yourself from the steps that don't need you.</p>
+            <p class="sec-l">What to explore</p>
+            <div class="wk-xp-item"><a href="https://modelcontextprotocol.io/introduction" target="_blank">What is MCP — the protocol that lets Claude take action, not just answer</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/11503834-build-custom-connectors-via-remote-mcp-servers" target="_blank">Automation Chaining — stringing steps so Claude handles the sequence</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork" target="_blank">Scheduled Tasks — set it up once, let it run</a></div>
+            <div class="wk-xp-item"><a href="https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" target="_blank">Guardrails — where to keep humans in the loop and why</a></div>
+            <div class="wk-ms">
+              <div class="wk-ms-label">Milestone &middot; Do It + Nominate It</div>
+              <div class="wk-ms-text">Set up one automation that runs without you. And nominate a teammate whose work this program was worth copying.</div>
+              <div class="wk-ms-slack">Post to <span>#h1-agentic-ai-accelerator</span>: what you automated + what manual step it replaced</div>
+            </div>
+            <div class="wk-posted" id="posted-wk5" onclick="togglePosted('wk5')">
+              <div class="wk-posted-box"><svg viewBox="0 0 10 10" fill="none" stroke="#3f3afc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 5 4 7.5 8.5 2.5"/></svg></div>
+              <span class="wk-posted-label">I've posted my milestone to this week's <strong>#h1-agentic-ai-accelerator</strong> thread so I can be entered into the raffle. The team won't know otherwise!</span>
+            </div>
+            <div class="wk-btn-row">
+              <button class="wk-complete-btn" id="btn-wk5" onclick="markDone('wk5')" disabled>Mark Week 5 complete →</button>
+              <button class="wk-undo-btn" onclick="undoDone('wk5')">Undo</button>
+            </div>
+          </div>
+          <a href="https://claude.ai/project/019eada5-1c20-761f-a81d-a23d72c3971c" target="_blank" class="coach-nudge">
+            <div class="coach-nudge-ico">🧠</div>
+            <div class="coach-nudge-eyebrow">AI Coach</div>
+            <div class="coach-nudge-title">AI-Native Transformation Coach</div>
+            <div class="coach-nudge-txt">Ask for help identifying the best automation opportunity in your current workflow.</div>
+            <div class="coach-nudge-cta">Start a conversation →</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="side-card">
+      <div class="side-title">How it works</div>
+      <div class="tl">
+        <div class="tl-item"><div class="tl-dot">1</div><div class="tl-c"><div class="tl-t">Weekly post drops</div><div class="tl-s">Content goes live in #h1-agentic-ai-accelerator each week</div></div></div>
+        <div class="tl-item"><div class="tl-dot">2</div><div class="tl-c"><div class="tl-t">You explore + build</div><div class="tl-s">Try the feature. Complete the milestone challenge.</div></div></div>
+        <div class="tl-item"><div class="tl-dot">3</div><div class="tl-c"><div class="tl-t">Post your work</div><div class="tl-s">Drop it in the thread. Entered in the weekly raffle.</div></div></div>
+        <div class="tl-item"><div class="tl-dot">4</div><div class="tl-c"><div class="tl-t">Weekly office hours</div><div class="tl-s">30-min drop-in for "I tried this and it didn't work"</div></div></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-title">Milestone types</div>
+      <div class="ct-list">
+        <div class="ct-item"><span class="ct-bdg b-do">Do It</span><span class="ct-desc">Build, use, or set something up. Screenshot or brief description as proof.</span></div>
+        <div class="ct-item"><span class="ct-bdg b-share">Share It</span><span class="ct-desc">Post what you learned, what worked, or what broke. Honest beats polished.</span></div>
+        <div class="ct-item"><span class="ct-bdg b-nom">Nominate It</span><span class="ct-desc">Recognize a teammate who did something worth copying. If you saw it, say so.</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-title">The H1 AI Manifesto</div>
+      <div class="mf-list">
+        <div class="mf-item" onclick="openModal(0)"><span class="mf-num">1</span><div class="mf-content"><div class="mf-title">AI earns its keep.</div><div class="mf-hint">Judge by output, not theater.</div></div></div>
+        <div class="mf-item" onclick="openModal(1)"><span class="mf-num">2</span><div class="mf-content"><div class="mf-title">AI first, judgment always.</div><div class="mf-hint">Default to it. Own what comes out.</div></div></div>
+        <div class="mf-item" onclick="openModal(2)"><span class="mf-num">3</span><div class="mf-content"><div class="mf-title">Treat your workflows like a target.</div><div class="mf-hint">Break it before you defend it.</div></div></div>
+        <div class="mf-item" onclick="openModal(3)"><span class="mf-num">4</span><div class="mf-content"><div class="mf-title">Trust before speed.</div><div class="mf-hint">Speed compounds. So does broken trust.</div></div></div>
+        <div class="mf-item" onclick="openModal(4)"><span class="mf-num">5</span><div class="mf-content"><div class="mf-title">Treat data like the asset it is.</div><div class="mf-hint">Know what you send and where it lands.</div></div></div>
+        <div class="mf-item" onclick="openModal(5)"><span class="mf-num">6</span><div class="mf-content"><div class="mf-title">Disclose what works. Disclose what breaks.</div><div class="mf-hint">Shared iteration is the multiplier.</div></div></div>
+        <div class="mf-item" onclick="openModal(6)"><span class="mf-num">7</span><div class="mf-content"><div class="mf-title">Direct what AI executes.</div><div class="mf-hint">Your value is in the thinking that directs it.</div></div></div>
+      </div>
+      <p class="mf-tap">Tap any principle to read it in full</p>
+    </div>
+
+    <div class="slack-card">
+      <div class="slack-ico">💬</div>
+      <div class="slack-title">#h1-agentic-ai-accelerator</div>
+      <div class="slack-text">Where milestones are posted, wins are shared, and individual discovery becomes collective velocity. All program posts live here.</div>
+      <a href="https://hackerone.slack.com/archives/C09M47Y857X" target="_blank" class="slack-link">Join the channel →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMPLETION TOAST -->
+<div class="toast-backdrop" id="toast-backdrop" onclick="dismissToast()"></div>
+<div class="toast" id="completion-toast">
+  <div class="toast-top">
+    <span class="toast-icon">🎉</span>
+    <div class="toast-txt">
+      <div class="toast-title" id="toast-title"></div>
+      <div class="toast-body" id="toast-body"></div>
+    </div>
+    <div class="toast-close" onclick="dismissToast()">✕</div>
+  </div>
+  <div class="toast-actions">
+    <button class="toast-dismiss" style="flex:1;text-align:center;" onclick="dismissToast()">Keep going →</button>
+  </div>
+</div>
+
+<!-- MANIFESTO MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModalBg(event)">
+  <div class="modal" id="modal">
+    <div class="modal-close" onclick="closeModal()">✕</div>
+    <div class="modal-num" id="m-num"></div>
+    <div class="modal-title" id="m-title"></div>
+    <div class="modal-body" id="m-body"></div>
+    <div class="modal-nav">
+      <button class="modal-nav-btn" id="m-prev" onclick="navModal(-1)">← Previous</button>
+      <span class="modal-counter" id="m-counter"></span>
+      <button class="modal-nav-btn" id="m-next" onclick="navModal(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── MANIFESTO DATA ──
+const principles = [
+  {
+    title: "AI earns its keep.",
+    body: `<p>We judge AI by what it produces: faster decisions, lower risk, new value that wasn't possible before. For our business and for our researchers and customers.</p><p>In security, signal is everything. Same rule here: when AI sharpens the signal, we double down. When it adds noise, we cut it.</p><p><strong>If you can't name the decision the AI improved, you're using AI for theater.</strong></p>`
+  },
+  {
+    title: "AI first, judgment always.",
+    body: `<p>AI is our default, not a supplement to how we used to work. Reach for it first, in small decisions and large ones. Before seeking more resources, explore what AI already makes possible.</p><p>Then own what comes out. Validate before you act. Apply judgment, especially in adversarial contexts.</p><p><strong>AI supports your thinking. It does not replace it.</strong></p>`
+  },
+  {
+    title: "Treat your workflows like a target.",
+    body: `<p>A process you haven't tried to break is a process you don't understand. Find the assumptions, challenge them, rebuild from what you discover.</p><p>Don't bolt AI onto existing processes; dismantle them and redesign around what AI makes possible. Revisit as the field shifts.</p><p><strong>Managers are accountable for replacing legacy workflows, not defending them.</strong></p>`
+  },
+  {
+    title: "Trust before speed.",
+    body: `<p>Trust is what we sell: to researchers, customers, and the ecosystem. Speed is a compounding advantage, but only on a foundation of trust; lose the trust and the compounding goes with it.</p><p>Building or using AI demands the same discipline. Assume misuse, not just normal use. Stress-test where things go wrong, especially in adversarial scenarios and wherever AI shapes triage, customer outcomes, or researcher rewards.</p><p>Unfair AI erodes trust faster than slow AI ever could. Make your reasoning visible, and say plainly where AI is making the call.</p><p><strong>If our work wouldn't survive scrutiny from customers, researchers, and regulators, we're not done.</strong></p>`
+  },
+  {
+    title: "Treat data like the asset it is.",
+    body: `<p>Every data asset we hold is a target. The vulnerability signal and researcher data in our ecosystem are irreplaceable, accumulated across years, customers, and the global researcher community.</p><p><strong>Two obligations.</strong> Protect it: every prompt you send into an AI system expands the attack surface and may expand its training set. Know what you're sending, where it lands, and who can recover it. Enrich it: this is the competitive asset behind every product decision we make. Treat it like the moat it is, not exhaust.</p><p><strong>If you wouldn't put it in a customer email, don't put it in a prompt.</strong></p>`
+  },
+  {
+    title: "Disclose what works. Disclose what breaks.",
+    body: `<p>We built this company on the principle that finding what's broken and disclosing it makes the whole system stronger. Same logic inward. When a workflow works, share it immediately. When AI fails, say so, loudly and specifically.</p><p>Individual discovery has limited value if it stays individual. Velocity is a liability if it only accelerates confusion. We are moving from collaborating on documents to collaborating on prompts and frameworks. Shared iteration is the multiplier. Silos are the ceiling.</p><p><strong>High-speed AI workflows will break legacy processes. Find the new bottlenecks early and redesign; don't work around them.</strong></p>`
+  },
+  {
+    title: "Direct what AI executes.",
+    body: `<p>The best security researchers aren't valuable because they execute faster; they're valuable because they see what others miss. As AI handles more coordination and routine decisions, the same shift applies here. Your value is in the thinking that directs it, not the doing.</p><p><strong>Ask the questions AI can't ask. Design the systems AI will run. Catch what AI gets wrong.</strong></p>`
+  }
+];
+
+let currentModal = 0;
+
+function openModal(i) {
+  currentModal = i;
+  renderModal();
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalBg(e) { if (e.target === document.getElementById('modal-bg')) closeModal(); }
+function navModal(dir) {
+  currentModal = Math.max(0, Math.min(principles.length - 1, currentModal + dir));
+  renderModal();
+}
+function renderModal() {
+  const p = principles[currentModal];
+  document.getElementById('m-num').textContent = 'Principle ' + (currentModal + 1) + ' of ' + principles.length;
+  document.getElementById('m-title').textContent = p.title;
+  document.getElementById('m-body').innerHTML = p.body;
+  document.getElementById('m-counter').textContent = (currentModal + 1) + ' / ' + principles.length;
+  document.getElementById('m-prev').disabled = currentModal === 0;
+  document.getElementById('m-next').disabled = currentModal === principles.length - 1;
+}
+document.addEventListener('keydown', e => {
+  const bg = document.getElementById('modal-bg');
+  if (!bg.classList.contains('open')) return;
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowLeft') navModal(-1);
+  if (e.key === 'ArrowRight') navModal(1);
+});
+
+// ── PROGRESS TRACKING ──
+const WEEKS = ['wk1','wk2','wk3','wk4','wk5'];
+const WEEK_LABELS = {
+  wk1: { title: 'Week 1 done! 🔌', body: 'Great start — your environment is live and your tools are connected. Week 2 is where things get repeatable. Head there when you\'re ready.' },
+  wk2: { title: 'Week 2 done! ⚙️', body: 'You\'ve built something reusable — that\'s the real shift. Skills compound. Keep that momentum going into Projects next week.' },
+  wk3: { title: 'Week 3 done! 🗂️', body: 'A configured workspace is a different experience entirely. You\'re past setup and into real workflow territory. Week 4 is about shipping something tangible.' },
+  wk4: { title: 'Week 4 done! ✨', body: 'You built something your team can actually use — that\'s the bar. One week left. Automation is where everything you\'ve built this month starts running itself.' },
+  wk5: { title: 'Program complete! 🎉', body: 'Five weeks, five milestones. You\'ve gone from setup to automation — that\'s the whole stack. The real work now is making it stick. Keep building.' },
+};
+let toastTimer = null;
+let done = new Set();
+try { done = new Set(JSON.parse(localStorage.getItem('h1_acc_done') || '[]')); } catch(e){}
+
+function save() { try { localStorage.setItem('h1_acc_done', JSON.stringify([...done])); } catch(e){} }
+
+function updateProgress() {
+  const n = done.size;
+  document.getElementById('prog-fill').style.width = (n / WEEKS.length * 100) + '%';
+  document.getElementById('prog-count').textContent = n + ' of ' + WEEKS.length + ' complete';
+  WEEKS.forEach(id => {
+    const card = document.getElementById(id);
+    const btn = document.getElementById('btn-' + id);
+    if (done.has(id)) {
+      card.classList.add('wk-done');
+      if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); btn.disabled = true; }
+    }
+  });
+}
+
+function showToast(id) {
+  const data = WEEK_LABELS[id];
+  document.getElementById('toast-title').textContent = data.title;
+  document.getElementById('toast-body').innerHTML = data.body;
+  document.getElementById('completion-toast').classList.add('show');
+  document.getElementById('toast-backdrop').classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(dismissToast, 9000);
+}
+
+function dismissToast() {
+  document.getElementById('completion-toast').classList.remove('show');
+  document.getElementById('toast-backdrop').classList.remove('show');
+  if (toastTimer) clearTimeout(toastTimer);
+}
+
+function markDone(id) {
+  if (done.has(id)) return;
+  done.add(id);
+  save();
+  updateProgress();
+  confetti();
+  showToast(id);
+  // open next week after a short delay
+  const idx = WEEKS.indexOf(id);
+  if (idx < WEEKS.length - 1) {
+    const next = WEEKS[idx + 1];
+    setTimeout(() => {
+      const nextCard = document.getElementById(next);
+      document.querySelectorAll('.week-card').forEach(c => c.classList.remove('wk-open'));
+      nextCard.classList.add('wk-open');
+      nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
+  }
+}
+
+// posted checkbox state (in-memory only, resets on page load — intentional)
+const posted = new Set();
+
+function togglePosted(id) {
+  const el = document.getElementById('posted-' + id);
+  const btn = document.getElementById('btn-' + id);
+  if (done.has(id)) return; // already complete, ignore
+  if (posted.has(id)) {
+    posted.delete(id);
+    el.classList.remove('checked');
+    btn.disabled = true;
+  } else {
+    posted.add(id);
+    el.classList.add('checked');
+    btn.disabled = false;
+  }
+}
+
+function undoDone(id) {
+  if (!done.has(id)) return;
+  done.delete(id);
+  save();
+  const card = document.getElementById(id);
+  card.classList.remove('wk-done');
+  const btn = document.getElementById('btn-' + id);
+  const wkNum = id.replace('wk','');
+  if (btn) { btn.textContent = 'Mark Week ' + wkNum + ' complete →'; btn.classList.remove('done'); btn.disabled = true; }
+  // reset checkbox
+  posted.delete(id);
+  const postedEl = document.getElementById('posted-' + id);
+  if (postedEl) postedEl.classList.remove('checked');
+  const n = done.size;
+  document.getElementById('prog-fill').style.width = (n / WEEKS.length * 100) + '%';
+  document.getElementById('prog-count').textContent = n + ' of ' + WEEKS.length + ' complete';
+}
+
+function toggleWk(id) {
+  const card = document.getElementById(id);
+  const isOpen = card.classList.contains('wk-open');
+  document.querySelectorAll('.week-card').forEach(c => c.classList.remove('wk-open'));
+  if (!isOpen) card.classList.add('wk-open');
+}
+
+function confetti() {
+  const colors = ['#ed15c4','#3f3afc','#ffffff','#f0c040','#7a76ff'];
+  for (let i = 0; i < 55; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'cf';
+      el.style.cssText = `left:${Math.random()*100}vw;top:-8px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1.4+Math.random()*1.4}s;animation-delay:${Math.random()*.4}s`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }, i * 18);
+  }
+}
+
+// init
+updateProgress();
+</script>
+</body>
+</html>
